@@ -58,6 +58,7 @@ var tests = [
   require('./middleware/dedupe'),
   require('./middleware/parseBBox'),
   require('./middleware/sendJSON'),
+  require('./middleware/mapFields'),
   require('./middleware/normalizeParentIds'),
   require('./middleware/sizeCalculator'),
   require('./middleware/sortResponseData'),
