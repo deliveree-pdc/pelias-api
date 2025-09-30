@@ -45,6 +45,8 @@ function setup(service, should_execute) {
         response_time: Date.now() - start,
         language: req.clean.lang.iso6391,
         controller: 'language', //technically middleware, but this is consistent with other log lines
+        result_count: _.defaultTo(res.data, []).length,
+        data: translations
       });
 
       // otherwise, update all the docs with translations
@@ -108,12 +110,12 @@ function updateDocs( req, res, translations ){
         }
 
         // translate 'parent.*' property
-        adminValues[i] = translations[id].names[ requestLanguage ][0];
+        adminValues[i] = translations[id].names[ requestLanguage ];
 
         // if the record is an admin record we also translate
         // the 'name.default' property.
         if( adminKey === doc.layer ){
-          doc.name.default = translations[id].names[ requestLanguage ][0];
+          doc.name.default = translations[id].names[ requestLanguage ];
         }
       }
     }
