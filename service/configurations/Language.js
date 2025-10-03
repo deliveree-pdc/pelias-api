@@ -30,7 +30,7 @@ class Language extends ServiceConfiguration {
   }
 
   getUrl(req) {
-    return url.resolve(this.baseUrl, 'parser/findbyid');
+    return url.resolve(this.baseUrl, '/placeholder/osm/names');
   }
 
 }
