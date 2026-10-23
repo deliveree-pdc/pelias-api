@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const peliasQuery = require('pelias-query');
+const getSourceId = require('../helper/getSourceId');
 const defaults = require('./search_defaults');
 
 //------------------------------
@@ -87,7 +88,7 @@ function anyResultsAtGranularityBand(results, band) {
 
 // returns the ids of results at the requested layer
 function getIdsAtLayer(results, layer) {
-  return results.filter(result => result.layer === layer).map(_.property('source_id'));
+  return results.filter(result => result.layer === layer).map(getSourceId);
 }
 
 /**
@@ -129,7 +130,13 @@ function generateQuery( clean, res ){
   vs.var( 'input:street', clean.parsed_text.street );
 
   // find the first granularity band for which there are results
-  const granularity_band = granularity_bands.find(band => anyResultsAtGranularityBand(results, band));
+  let granularity_band = granularity_bands.find(band => anyResultsAtGranularityBand(results, band));
+
+  // special case: if locality is present in the band, also include macrocounty
+  // this is used to cover the Greater Syndey Area
+  if (granularity_band && granularity_band.includes('locality')) {
+    granularity_band = [...granularity_band, 'macrocounty'];
+  }
 
   // if there's a granularity band, accumulate the ids from each layer in the band
   // into an object mapping layer->ids of those layers

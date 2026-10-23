@@ -29,7 +29,7 @@ module.exports.tests.all = (test, common) => {
 
     const language = new Language(configBlob);
 
-    t.equals(language.getUrl(), 'http://localhost:1234/parser/findbyid');
+    t.equals(language.getUrl(), 'http://localhost:1234/placeholder/osm/names');
     t.end();
 
   });
@@ -158,7 +158,7 @@ module.exports.tests.all = (test, common) => {
 
     const language = new Language(configBlob);
 
-    t.deepEquals(language.getUrl(), 'http://localhost:1234/parser/findbyid');
+    t.deepEquals(language.getUrl(), 'http://localhost:1234/placeholder/osm/names');
     t.end();
 
   });

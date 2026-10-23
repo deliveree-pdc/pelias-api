@@ -29,14 +29,14 @@ module.exports.tests.query = function(test, common) {
       }
     };
 
-    var expected_query = require('../fixture/search_with_custom_boosts.json');
+    var expected_query = require('../fixture/search_with_custom_boosts');
 
     const search_query_module = proxyquire('../../../query/search_pelias_parser', {
       'pelias-config': config_with_boosts
     });
 
     const actual_query = JSON.parse( JSON.stringify( search_query_module(clean) ) );
-    t.deepEqual(actual_query, expected_query, 'search_with_custom_boosts query as expected');
+    common.deepEqual(t, actual_query, expected_query, 'search_with_custom_boosts query as expected');
     t.pass();
     t.end();
   });

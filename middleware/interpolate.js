@@ -3,6 +3,7 @@ const logger = require( 'pelias-logger' ).get( 'api' );
 const source_mapping = require('../helper/type_mapping').source_mapping;
 const _ = require('lodash');
 const Debug = require('../helper/debug');
+const getSourceId = require('../helper/getSourceId');
 const debugLog = new Debug('middleware:interpolate');
 
 /**
@@ -62,9 +63,8 @@ function setup(service, should_execute, interpolationConfiguration) {
     const street_results = _.get(res, 'data', []).filter(result => result.layer === 'street');
 
     // perform interpolations asynchronously for all relevant hits
-    const initialTime = debugLog.beginTimer(req);
 
-    const startTime = Date.now();
+    const start = Date.now();
     const logInfo = {
       controller: 'interpolation', //technically middleware, but stay consistent with other log lines
       street_count: street_results.length,
@@ -79,7 +79,7 @@ function setup(service, should_execute, interpolationConfiguration) {
         const resultLogInfo = {
           controller: 'interpolation',
           street_name: street_results[idx].name.default,
-          street_id: street_results[idx].source_id,
+          street_id: getSourceId(street_results[idx]),
           outcome: 'hit', //assume hit, update later if not
           idx: idx,
           response_time: _.get(interpolation_result, 'metadata.response_time')
@@ -117,12 +117,6 @@ function setup(service, should_execute, interpolationConfiguration) {
           ['mixed']
         )[0];
 
-        // -- source_id --
-        // note: interpolated values often have no source_id, so street id will be used
-        if( interpolation_result.properties.hasOwnProperty( 'source_id' ) ){
-          source_result.source_id = interpolation_result.properties.source_id;
-        }
-
         // -- address_parts --
         source_result.address_parts.number = interpolation_result.properties.number;
 
@@ -148,9 +142,11 @@ function setup(service, should_execute, interpolationConfiguration) {
 
 
       // log and continue
-      logInfo.total_response_time = Date.now() - startTime;
+      logInfo.total_response_time = Date.now() - start;
       logger.info('interpolation', logInfo);
-      debugLog.stopTimer(req, initialTime);
+      debugLog.push(req, {
+        duration: Date.now() - start
+      });
       next();
     });
   };

@@ -32,7 +32,7 @@ module.exports.tests.query = function(test, common) {
       }
     };
 
-    var expected_query = require('../fixture/autocomplete_custom_boosts.json');
+    var expected_query = require('../fixture/autocomplete_custom_boosts');
 
     const autocomplete_query_module = proxyquire('../../../query/autocomplete', {
       'pelias-config': config_with_boosts
@@ -40,7 +40,7 @@ module.exports.tests.query = function(test, common) {
 
     const actual_query = JSON.parse( JSON.stringify( autocomplete_query_module(clean) ) );
 
-    t.deepEqual(actual_query, expected_query, 'autocomplete_custom_boosts');
+    common.deepEqual(t, actual_query, expected_query, 'autocomplete_custom_boosts');
     t.pass();
     t.end();
   });
