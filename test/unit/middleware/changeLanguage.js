@@ -218,18 +218,37 @@ module.exports.tests.success_conditions = (test, common) => {
 
       t.notOk(logger.hasErrorMessages(), 'there shouldn\'t be any error messages');
 
+      // Test each part separately for better error messages
+      t.deepEquals(res.data[0].name.default, ['replacement name for layer1'], 'first doc name.default should be array');
+      t.deepEquals(res.data[0].parent.layer1, [['replacement name for layer1']], 'first doc parent.layer1 should be nested array');
+      // Test that layer2 contains all translation names, not just the first one
+      t.deepEquals(
+        res.data[0].parent.layer2, 
+        [['replacement name for layer2', 'another replacement name for layer2']], 
+        'first doc parent.layer2 should be nested array with all names'
+      );
+      
+      t.deepEquals(res.data[3].parent.layer3, [
+        ['replacement name 1 for layer3'],
+        ['replacement name 2 for layer3']
+      ], 'fourth doc parent.layer3 should be nested arrays');
+
+      t.deepEquals(res.data[4].parent.layer1, [['replacement name for layer1']], 'fifth doc parent.layer1 should be nested array');
+      t.deepEquals(res.data[5].parent.layer1, [['replacement name for layer1']], 'sixth doc parent.layer1 should be nested array');
+
+      // Full object comparison
       t.deepEquals(res, {
         data: [
           {
             name: {
-              default: 'replacement name for layer1'
+              default: ['replacement name for layer1']
             },
             layer: 'layer1',
             parent: {
               layer1_id: ['1'],
-              layer1: ['replacement name for layer1'],
+              layer1: [['replacement name for layer1']],
               layer2_id: ['2'],
-              layer2: ['replacement name for layer2']
+              layer2: [['replacement name for layer2', 'another replacement name for layer2']]  // Fixed: include all names
             }
           },
           undefined,
@@ -241,7 +260,7 @@ module.exports.tests.success_conditions = (test, common) => {
             layer: 'layer10',
             parent: {
               layer3_id: ['3', '4'],
-              layer3: ['replacement name 1 for layer3', 'replacement name 2 for layer3'],
+              layer3: [['replacement name 1 for layer3'], ['replacement name 2 for layer3']],
               layer10_id: ['10'],
               layer10: ['original name for layer10'],
               layer11_id: ['11'],
@@ -260,7 +279,7 @@ module.exports.tests.success_conditions = (test, common) => {
             layer: 'address',
             parent: {
               layer1_id: ['1'],
-              layer1: ['replacement name for layer1']
+              layer1: [['replacement name for layer1']]
             }
           },
           {
@@ -271,7 +290,7 @@ module.exports.tests.success_conditions = (test, common) => {
             layer: 'address',
             parent: {
               layer1_id: ['1'],
-              layer1: ['replacement name for layer1']
+              layer1: [['replacement name for layer1']]
             }
           }
         ]

@@ -33,7 +33,7 @@
     "url": "https://github.com/pelias/api/issues"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "@hapi/joi": "^16.0.1",
@@ -49,14 +49,14 @@
     "markdown": "^0.5.0",
     "morgan": "^1.8.2",
     "pelias-compare": "^0.1.16",
-    "pelias-config": "^5.0.1",
-    "pelias-labels": "https://github.com/deliveree-pdc/pelias-labels",
-    "pelias-logger": "^1.2.0",
-    "pelias-microservice-wrapper": "^1.10.0",
-    "pelias-model": "^9.0.0",
-    "pelias-parser": "2.2.0",
-    "pelias-query": "^11.4.0",
-    "pelias-sorting": "^1.7.0",
+    "pelias-config": "^7.0.0",
+    "pelias-labels": "git+https://github.com/deliveree-pdc/pelias-labels.git#e19b56016fb959b71fb7eb14c7e64f348cb3e841",
+    "pelias-logger": "^2.0.0",
+    "pelias-microservice-wrapper": "^2.0.0",
+    "pelias-model": "^11.0.0",
+    "pelias-parser": "^5.0.0",
+    "pelias-query": "^12.0.0",
+    "pelias-sorting": "^2.0.0",
     "predicates": "^2.0.0",
     "regenerate": "^1.4.0",
     "remove-accents": "0.4.2",
@@ -70,7 +70,7 @@
     "difflet": "^1.0.1",
     "istanbul": "^0.4.2",
     "jshint": "^2.10.1",
-    "pelias-mock-logger": "^1.3.0",
+    "pelias-mock-logger": "^2.0.0",
     "precommit-hook": "^3.0.0",
     "proxyquire": "^2.0.0",
     "tap-dot": "^2.0.0",
